@@ -268,7 +268,12 @@ public class AbstractEventConverter {
 
   protected Object convertUUID(Object value) {
     if (value instanceof String) {
-      return UUID.fromString((String) value);
+      String s = (String) value;
+      if (s.isEmpty()) {
+        LOGGER.warn("Empty string encountered in UUID field, storing null");
+        return null;
+      }
+      return UUID.fromString(s);
     } else if (value instanceof UUID) {
       return value;
     }
